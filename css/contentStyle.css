@@ -275,7 +275,6 @@ html.bgu-dark-mode #bgu-scraping-indicator * {
 html.bgu-dark-mode #bgu-scraping-indicator {
     background: #1f2937 !important;
     border-color: #374151 !important;
-    font-size: 8px;
 }
 
 .custom-spacebar-icon {

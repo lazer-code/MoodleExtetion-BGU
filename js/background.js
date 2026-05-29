@@ -780,13 +780,6 @@ async function _findTaskByTitleOrLink({ title, kind = 'task', link }) {
             _normalizeTaskText(row.title) === normalizedTitle
         );
         if (exactTitle) return exactTitle;
-
-        const looseTitle = all.find((row) => {
-            if (!row || row.deleted_at || row.kind !== kind) return false;
-            const rowTitle = _normalizeTaskText(row.title);
-            return rowTitle.includes(normalizedTitle) || normalizedTitle.includes(rowTitle);
-        });
-        if (looseTitle) return looseTitle;
     }
 
     return null;
