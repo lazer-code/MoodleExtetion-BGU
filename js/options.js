@@ -2,7 +2,41 @@ if (typeof errorLogger !== 'undefined') {
     errorLogger.install(window, { context: 'options' });
 }
 
+function resolveThemeMode(mode) {
+    if (mode === 'dark') return 'dark';
+    if (mode === 'light') return 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyOptionsTheme(mode) {
+    const resolved = resolveThemeMode(mode);
+    document.body.classList.toggle('theme-dark', resolved === 'dark');
+    document.body.classList.toggle('theme-light', resolved !== 'dark');
+}
+
+function initOptionsTheme() {
+    chrome.storage.sync.get('themeMode', function(data) {
+        applyOptionsTheme(data.themeMode || 'system');
+    });
+
+    chrome.storage.onChanged.addListener(function(changes, area) {
+        if (area === 'sync' && changes.themeMode) {
+            applyOptionsTheme(changes.themeMode.newValue || 'system');
+        }
+    });
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', function() {
+        chrome.storage.sync.get('themeMode', function(data) {
+            if ((data.themeMode || 'system') === 'system') {
+                applyOptionsTheme('system');
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    initOptionsTheme();
     const userForm = document.getElementById('userForm');
     const saveButton = document.getElementById('saveButton');
     const saveUserButton = document.getElementById('saveUserButton');
@@ -222,6 +256,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         toggleGptMath.addEventListener('change', function() {
             chrome.storage.sync.set({ toggleStateGptMath: toggleGptMath.checked });
+        });
+    }
+
+    // Theme mode select
+    const themeModeSelect = document.getElementById('theme-mode');
+    if (themeModeSelect) {
+        chrome.storage.sync.get('themeMode', function(data) {
+            themeModeSelect.value = data.themeMode || 'system';
+            applyOptionsTheme(themeModeSelect.value);
+        });
+        themeModeSelect.addEventListener('change', function() {
+            const value = this.value || 'system';
+            chrome.storage.sync.set({ themeMode: value });
+            applyOptionsTheme(value);
         });
     }
 

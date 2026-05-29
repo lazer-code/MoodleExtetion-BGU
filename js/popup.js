@@ -87,6 +87,69 @@ function normalizeTaskRow(row) {
     };
 }
 
+function resolveThemeMode(mode) {
+    if (mode === 'dark') return 'dark';
+    if (mode === 'light') return 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyPopupTheme(mode) {
+    const resolved = resolveThemeMode(mode);
+    document.body.classList.toggle('theme-dark', resolved === 'dark');
+    document.body.classList.toggle('theme-light', resolved !== 'dark');
+}
+
+function initPopupTheme() {
+    chrome.storage.sync.get('themeMode', function(data) {
+        applyPopupTheme(data.themeMode || 'system');
+    });
+
+    chrome.storage.onChanged.addListener(function(changes, area) {
+        if (area === 'sync' && changes.themeMode) {
+            applyPopupTheme(changes.themeMode.newValue || 'system');
+        }
+    });
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', function() {
+        chrome.storage.sync.get('themeMode', function(data) {
+            if ((data.themeMode || 'system') === 'system') {
+                applyPopupTheme('system');
+            }
+        });
+    });
+}
+
+initPopupTheme();
+
+function normalizeMoodleTaskLink(rawUrl) {
+    try {
+        const url = new URL(rawUrl || '');
+        const id = url.searchParams.get('id');
+        return id
+            ? `${url.origin}${url.pathname}?id=${id}`
+            : `${url.origin}${url.pathname}`;
+    } catch (_) {
+        return String(rawUrl || '').trim();
+    }
+}
+
+function normalizeTaskTitle(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+function buildDoneTaskMatchers(doneRows) {
+    const doneTitles = new Set(doneRows.map((row) => normalizeTaskTitle(row.title)).filter(Boolean));
+    const doneLinks = new Set(doneRows.map((row) => normalizeMoodleTaskLink(row.link)).filter(Boolean));
+    return { doneTitles, doneLinks };
+}
+
+function isSubmissionDone(course, doneMatchers) {
+    const courseTitle = normalizeTaskTitle(course && course.name);
+    const courseLink = normalizeMoodleTaskLink(course && course.link);
+    return doneMatchers.doneTitles.has(courseTitle) || doneMatchers.doneLinks.has(courseLink);
+}
+
 // Tab Navigation
 document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', function() {
@@ -398,9 +461,15 @@ chrome.storage.local.get('analyticsEngagement', function(data) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    readSubmissionsForUI().then(({ courses, hiddenCourses }) => {
-        displayCourses(courses, hiddenCourses);
-    });
+    (async () => {
+        const { courses, hiddenCourses } = await readSubmissionsForUI();
+        const doneRows = (await tasksRepo.list('task', { includeDone: true }))
+            .map(normalizeTaskRow)
+            .filter((row) => row.done);
+        const doneMatchers = buildDoneTaskMatchers(doneRows);
+        const visibleCourses = courses.filter((course) => !isSubmissionDone(course, doneMatchers));
+        displayCourses(visibleCourses, hiddenCourses);
+    })();
 
     chrome.storage.local.get('availableCourses', function(result) {
         const availableCourses = result.availableCourses || [];
@@ -1435,7 +1504,7 @@ function loadDashboard() {
             const allIncludingDone = (await tasksRepo.list('task', { includeDone: true })).map(normalizeTaskRow);
             const done = allIncludingDone.filter(t => t.done);
             const taskItUp = active; // for compatibility with legacy variable names
-            const doneTitles = done.map(d => d.title);
+            const doneMatchers = buildDoneTaskMatchers(done);
 
             const submissionsUI = await readSubmissionsForUI();
             const allCourses = submissionsUI.courses;
@@ -1445,7 +1514,7 @@ function loadDashboard() {
             // Filter out hidden and done assignments
             const courses = allCourses.filter(course =>
                 !hiddenCourses.includes(course.link) &&
-                !doneTitles.includes(course.name)
+                !isSubmissionDone(course, doneMatchers)
             );
 
             // 1. Submissions count (Moodle only, excluding hidden/done)
@@ -1993,4 +2062,3 @@ document.getElementById("zoomInButton").addEventListener("click", function() {
         _init();
     }
 })();
-

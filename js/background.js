@@ -738,6 +738,60 @@ async function _isSignedIn() {
     }
 }
 
+function _normalizeTaskText(value) {
+    return String(value || '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+}
+
+function _normalizeMoodleTaskLink(rawUrl) {
+    try {
+        const url = new URL(rawUrl || '');
+        const id = url.searchParams.get('id');
+        return id
+            ? `${url.origin}${url.pathname}?id=${id}`
+            : `${url.origin}${url.pathname}`;
+    } catch (_) {
+        return String(rawUrl || '').trim();
+    }
+}
+
+async function _findTaskByTitleOrLink({ title, kind = 'task', link }) {
+    const all = await globalThis.tasksRepo.listAll();
+    const normalizedTitle = _normalizeTaskText(title);
+    const normalizedLink = _normalizeMoodleTaskLink(link);
+
+    if (normalizedLink) {
+        const exactLink = all.find((row) =>
+            row &&
+            !row.deleted_at &&
+            row.kind === kind &&
+            _normalizeMoodleTaskLink(row.link) === normalizedLink
+        );
+        if (exactLink) return exactLink;
+    }
+
+    if (normalizedTitle) {
+        const exactTitle = all.find((row) =>
+            row &&
+            !row.deleted_at &&
+            row.kind === kind &&
+            _normalizeTaskText(row.title) === normalizedTitle
+        );
+        if (exactTitle) return exactTitle;
+
+        const looseTitle = all.find((row) => {
+            if (!row || row.deleted_at || row.kind !== kind) return false;
+            const rowTitle = _normalizeTaskText(row.title);
+            return rowTitle.includes(normalizedTitle) || normalizedTitle.includes(rowTitle);
+        });
+        if (looseTitle) return looseTitle;
+    }
+
+    return null;
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (!msg || typeof msg !== 'object') return;
     (async () => {
@@ -755,15 +809,30 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                 await globalThis.tasksRepo.markDone(msg.id);
                 sendResponse({ ok: true });
             } else if (msg.type === 'tasks.markDoneByTitle') {
-                const existing = await globalThis.tasksRepo.findByTitleAndKind(msg.title, msg.kind || 'task');
+                const kind = msg.kind || 'task';
+                const existing = await _findTaskByTitleOrLink({
+                    title: msg.title,
+                    kind,
+                    link: msg.link
+                });
                 if (existing) {
                     await globalThis.tasksRepo.markDone(existing.id);
                     sendResponse({ ok: true, found: true });
                 } else {
-                    await globalThis.tasksRepo.add(msg.kind || 'task', { title: msg.title });
-                    const created = await globalThis.tasksRepo.findByTitleAndKind(msg.title, msg.kind || 'task');
-                    await globalThis.tasksRepo.markDone(created.id);
-                    sendResponse({ ok: true, found: false });
+                    await globalThis.tasksRepo.add(kind, {
+                        title: msg.title,
+                        link: msg.link || null,
+                        course_name: msg.course_name || null
+                    });
+                    const created = await _findTaskByTitleOrLink({
+                        title: msg.title,
+                        kind,
+                        link: msg.link
+                    });
+                    if (created) {
+                        await globalThis.tasksRepo.markDone(created.id);
+                    }
+                    sendResponse({ ok: true, found: false, created: !!created });
                 }
             } else if (msg.type === 'tasks.remove') {
                 await globalThis.tasksRepo.remove(msg.id);

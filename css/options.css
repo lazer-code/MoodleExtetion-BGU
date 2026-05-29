@@ -455,3 +455,47 @@ input:checked + .toggle-slider:before {
     cursor: pointer;
 }
 .btn-danger:hover { background: #b91c1c; }
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid #FF6536;
+    outline-offset: 2px;
+}
+
+body.theme-dark {
+    background-color: #111827;
+    color: #e5e7eb;
+}
+
+body.theme-dark .settings-section {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+body.theme-dark .settings-header {
+    border-color: #374151;
+}
+
+body.theme-dark .header-text h1,
+body.theme-dark .section-title,
+body.theme-dark .pref-name,
+body.theme-dark .account-email {
+    color: #f3f4f6;
+}
+
+body.theme-dark .header-text p,
+body.theme-dark .section-hint,
+body.theme-dark .pref-desc,
+body.theme-dark .account-label {
+    color: #cbd5e1;
+}
+
+body.theme-dark .form-field input,
+body.theme-dark .pref-select,
+body.theme-dark .user-block,
+body.theme-dark .account-info {
+    background: #111827;
+    border-color: #4b5563;
+    color: #f3f4f6;
+}

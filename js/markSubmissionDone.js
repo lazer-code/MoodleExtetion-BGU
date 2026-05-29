@@ -1,10 +1,24 @@
 ////////////// mark item as done when upload a file
 
+function normalizeMoodleTaskLink(rawUrl) {
+    try {
+        const url = new URL(rawUrl || window.location.href);
+        const id = url.searchParams.get('id');
+        return id
+            ? `${url.origin}${url.pathname}?id=${id}`
+            : `${url.origin}${url.pathname}`;
+    } catch (_) {
+        return rawUrl || window.location.href;
+    }
+}
+
 function markItemAsDone(title) {
+    const link = normalizeMoodleTaskLink(window.location.href);
     chrome.runtime.sendMessage({
         type: 'tasks.markDoneByTitle',
         title: title,
-        kind: 'task'
+        kind: 'task',
+        link
     }, (response) => {
         if (!response?.ok) console.error('[markSubmissionDone] markDoneByTitle failed', response?.error);
     });
@@ -69,10 +83,15 @@ function recordDeadlineBehavior(title) {
     });
 }
 
-document.querySelector("#id_submitbutton").addEventListener('click', function() {
-    const title = document.querySelector('.page-header-headings').textContent.trim();
-    markItemAsDone(title);
-    recordDeadlineBehavior(title);
-});
+const submitButton = document.querySelector("#id_submitbutton");
+if (submitButton) {
+    submitButton.addEventListener('click', function() {
+        const title = document.querySelector('.page-header-headings')?.textContent.trim() || '';
+        if (!title) return;
+        markItemAsDone(title);
+        recordDeadlineBehavior(title);
+    });
+}
 
-document.querySelector(".checkbox input").click();
+const agreeCheckbox = document.querySelector(".checkbox input");
+if (agreeCheckbox) agreeCheckbox.click();

@@ -42,6 +42,9 @@
       "js": [ "js/markSubmissionDone.js" ],
       "matches": [ "https://moodle.bgu.ac.il/moodle/mod/assign/view.php?id=*&action=editsubmission" ]
    }, {
+      "js": [ "js/vplSubmissionDone.js" ],
+      "matches": [ "https://moodle.bgu.ac.il/moodle/mod/vpl/view.php*", "https://moodle.bgu.ac.il/moodle/mod/vpl/formsubmission.php*" ]
+   }, {
       "js": [ "js/autoLogins/autoLoginHelper.js", "js/autoLogins/gezerAutoLogin.js" ],
       "matches": [ "https://gezer1.bgu.ac.il/meser/main.php" ],
       "run_at": "document_end"
