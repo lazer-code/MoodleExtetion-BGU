@@ -17,6 +17,39 @@ const sparkLogo_v2 = `<svg width="42" height="42" viewBox="0 0 32 32" fill="none
 
 `;
 
+function resolveThemeMode(mode) {
+    if (mode === 'dark') return 'dark';
+    if (mode === 'light') return 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyMoodleTheme(mode) {
+    const resolved = resolveThemeMode(mode);
+    document.documentElement.classList.toggle('bgu-dark-mode', resolved === 'dark');
+    document.documentElement.classList.toggle('bgu-light-mode', resolved !== 'dark');
+}
+
+function initMoodleTheme() {
+    chrome.storage.sync.get('themeMode', function(data) {
+        applyMoodleTheme(data.themeMode || 'system');
+    });
+
+    chrome.storage.onChanged.addListener(function(changes, area) {
+        if (area === 'sync' && changes.themeMode) {
+            applyMoodleTheme(changes.themeMode.newValue || 'system');
+        }
+    });
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', function() {
+        chrome.storage.sync.get('themeMode', function(data) {
+            if ((data.themeMode || 'system') === 'system') {
+                applyMoodleTheme('system');
+            }
+        });
+    });
+}
+
 
 
 // Create loader and error message elements
@@ -143,4 +176,5 @@ function initializeLogin() {
 // Initialize the loader and error message
 createLoader();
 createErrorMessage();
+initMoodleTheme();
 initializeLogin();

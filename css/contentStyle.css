@@ -238,7 +238,43 @@
     background: #fff0d3;
     border: solid 1px #ffa5006b;
     border-radius: 4px;
-    font-size: 8px;
+}
+
+html.bgu-dark-mode .loading-moodle {
+    background-color: #111827 !important;
+    color: #e5e7eb !important;
+}
+
+html.bgu-dark-mode .sa-button.watchLater {
+    background: #1f2937 !important;
+    color: #e5e7eb !important;
+    border: 1px solid #4b5563 !important;
+}
+
+html.bgu-dark-mode .sa-button.taskItUp,
+html.bgu-dark-mode .sa-button.zoomlinks {
+    background: #f97316 !important;
+    color: #fff !important;
+}
+
+html.bgu-dark-mode .watched-badge {
+    background: #3f2b0d;
+    color: #fcd34d;
+}
+
+html.bgu-dark-mode .didnt-finish-badge {
+    background: #31213f;
+    color: #e9d5ff;
+}
+
+html.bgu-dark-mode #bgu-scraping-indicator,
+html.bgu-dark-mode #bgu-scraping-indicator * {
+    color: #f3f4f6 !important;
+}
+
+html.bgu-dark-mode #bgu-scraping-indicator {
+    background: #1f2937 !important;
+    border-color: #374151 !important;
 }
 
 .custom-spacebar-icon {

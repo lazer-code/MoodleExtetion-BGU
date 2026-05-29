@@ -334,7 +334,70 @@ span.course-name {
     background: #fff0d3;
     border: solid 1px #ffa5006b;
     border-radius: 4px;
-    font-size: 8px;
+}
+
+/* Shared accessibility + dark-mode polish */
+button:focus-visible,
+a:focus-visible,
+.settings:focus-visible,
+.tab-button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid #ff6536;
+    outline-offset: 2px;
+}
+
+.task-card,
+.course-card,
+.summary-card,
+.upcoming-deadlines,
+.task-section {
+    box-shadow: 0 1px 2px rgba(15, 24, 42, 0.05);
+}
+
+body.theme-dark {
+    background: #111827 !important;
+    color: #e5e7eb;
+}
+
+body.theme-dark .top-bar,
+body.theme-dark .tab-bar,
+body.theme-dark .task-section,
+body.theme-dark .summary-card,
+body.theme-dark .upcoming-deadlines,
+body.theme-dark .task-card,
+body.theme-dark .course-card,
+body.theme-dark .warning,
+body.theme-dark .next-deadline-bar {
+    background: #1f2937 !important;
+    color: #e5e7eb !important;
+    border-color: #374151 !important;
+}
+
+body.theme-dark .task-card-subtitle,
+body.theme-dark .summary-label,
+body.theme-dark .course-card-meta,
+body.theme-dark .upcoming-item-date,
+body.theme-dark .quick-open span {
+    color: #cbd5e1 !important;
+}
+
+body.theme-dark .top-bar .icons .settings,
+body.theme-dark .tab-button {
+    color: #e5e7eb !important;
+}
+
+body.theme-dark .top-bar .icons .settings:hover,
+body.theme-dark .tab-button:hover {
+    background: #374151 !important;
+}
+
+body.theme-dark .grid-item {
+    color: #e5e7eb;
+}
+
+body.theme-dark .link-icon-bg {
+    background: #374151;
 }
 
 .links-hide{
