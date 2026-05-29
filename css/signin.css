@@ -1,0 +1,181 @@
+.signin-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #FF421D 0%, #ff6600 100%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    color: white;
+    text-align: center;
+    direction: rtl;
+}
+
+.signin-overlay[hidden] {
+    display: none !important;
+}
+
+.signin-logo {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 16px;
+}
+
+.signin-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.signin-subtitle {
+    font-size: 13px;
+    opacity: 0.9;
+    margin: 0 0 32px;
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+.signin-google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: white;
+    color: #333;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.signin-google-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.signin-google-btn:disabled {
+    cursor: wait;
+    opacity: 0.85;
+    transform: none;
+}
+
+.signin-google-btn .signin-google-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.signin-google-spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-top-color: #FF421D;
+    border-radius: 50%;
+    animation: signin-spin 0.7s linear infinite;
+}
+
+.signin-google-btn.is-loading .signin-google-icon {
+    display: none;
+}
+
+.signin-google-btn.is-loading .signin-google-spinner {
+    display: inline-block;
+}
+
+@keyframes signin-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Initial load overlay — first-login pull while data lands */
+.initial-load-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(2px);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: rtl;
+}
+
+.initial-load-overlay[hidden] {
+    display: none !important;
+}
+
+.initial-load-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 28px 36px;
+    text-align: center;
+    color: #1f2937;
+}
+
+.initial-load-spinner {
+    width: 42px;
+    height: 42px;
+    border: 4px solid rgba(255, 66, 29, 0.18);
+    border-top-color: #FF421D;
+    border-radius: 50%;
+    animation: signin-spin 0.8s linear infinite;
+}
+
+.initial-load-title {
+    font-family: "Assistant", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.initial-load-subtitle {
+    font-family: "Assistant", sans-serif;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.signin-error {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #fff;
+    background: rgba(0,0,0,0.2);
+    padding: 10px 14px;
+    border-radius: 6px;
+    max-width: 320px;
+    line-height: 1.45;
+}
+
+.signin-error[hidden] {
+    display: none;
+}
+
+.signin-error-msg {
+    margin-bottom: 6px;
+}
+
+.signin-error-report {
+    display: inline-block;
+    margin-top: 4px;
+    color: #fff;
+    text-decoration: underline;
+    font-size: 11px;
+    opacity: 0.95;
+}
+
+.signin-error-report:hover {
+    opacity: 1;
+}
+
+.signin-privacy {
+    margin-top: 24px;
+    font-size: 11px;
+    opacity: 0.75;
+}
+.signin-privacy a { color: white; text-decoration: underline; }

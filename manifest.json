@@ -1,0 +1,74 @@
+{
+   "action": {
+      "default_icon": "images/icon48.png",
+      "default_popup": "html/popup.html"
+   },
+   "background": {
+      "service_worker": "js/background.js"
+   },
+   "commands": {
+      "open_popup": {
+         "description": "Open popup",
+         "suggested_key": {
+            "default": "Ctrl+Shift+E",
+            "mac": "Command+Shift+E"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "css": [ "css/contentStyle.css", "css/overallStyle.css", "lib/font-awesome-4.7.0/css/font-awesome.css" ],
+      "exclude_matches": [ "*://moodle.bgu.ac.il/moodle/*.pdf*" ],
+      "js": [ "js/autoLogin.js" ],
+      "matches": [ "*://moodle.bgu.ac.il/moodle/*" ]
+   }, {
+      "css": [ "css/project.css" ],
+      "matches": [ "*://new-ece-projects.ee.bgu.ac.il/*" ]
+   }, {
+      "exclude_matches": [ "https://moodle.bgu.ac.il/moodle/local/mydashboard/*" ],
+      "js": [ "js/contentScript.js", "js/taskManager.js" ],
+      "matches": [ "*://moodle.bgu.ac.il/moodle/*" ]
+   }, {
+      "js": [ "js/scrapeCourses.js", "js/dashboard.js", "js/scrapeAvailableCourses.js" ],
+      "matches": [ "https://moodle.bgu.ac.il/moodle/my/" ]
+   }, {
+      "js": [ "js/skipButtonInjector.js", "js/removeVolumeLimit.js", "js/resumeVideoFromLastTime.js", "js/videoCompleteTracking.js" ],
+      "matches": [ "*://moodle.bgu.ac.il/moodle/blocks/video/viewvideo.php*", "*://moodle.bgu.ac.il/moodle/mod/videostream/view.php*" ]
+   }, {
+      "exclude_matches": [ "*://moodle.bgu.ac.il/moodle/*.pdf*" ],
+      "js": [ "js/studySessionTracker.js" ],
+      "matches": [ "*://moodle.bgu.ac.il/moodle/*" ],
+      "run_at": "document_idle"
+   }, {
+      "js": [ "js/markSubmissionDone.js" ],
+      "matches": [ "https://moodle.bgu.ac.il/moodle/mod/assign/view.php?id=*&action=editsubmission" ]
+   }, {
+      "js": [ "js/autoLogins/autoLoginHelper.js", "js/autoLogins/gezerAutoLogin.js" ],
+      "matches": [ "https://gezer1.bgu.ac.il/meser/main.php" ],
+      "run_at": "document_end"
+   }, {
+      "css": [ "css/gptMathRTL.css" ],
+      "js": [ "js/gptMathRTL.js" ],
+      "matches": [ "*://*.chatgpt.com/*" ]
+   } ],
+   "description": "Get the BGU's web-experience out of the stone age.",
+   "host_permissions": [ "*://moodle.bgu.ac.il/*", "*://gezer1.bgu.ac.il/*", "*://*.chatgpt.com/*", "*://new-ece-projects.ee.bgu.ac.il/*", "https://solfcrulcrrbiabjfwac.supabase.co/*" ],
+   "icons": {
+      "128": "images/icon128.png",
+      "16": "images/icon16.png",
+      "48": "images/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi7UImk5IZKsjC/F0bjqtlLLdTxtg41BUuawfjaeCRq7IyVRtwpfGHpgjtxPFfJC50j+uYe6dWc3m4Rm7aj/B9Vpni/qGL6qmvO++AiKsFRfMj2KeAGmzxw42y9jez7iK1qUYxWGkvORJ9AUhiid3K9WRMzqskX8ZmydvjEn18TTSTxQaZc2yZRvTnFEpd0OZtCWu7vzDlyicySDTOJKHQwMQxAipmDZ9+8P0zMfgf0gTwLpVx40vEx54YLsJOQEnkkMns5/QSNgi6Rm6/VOTQ+2HGy6pQMyqdudLAb69KA5FiAHy4HrrfV2FfV/T8h8k95Qa9/7/7uZKx2nSRnVEvQIDAQAB",
+   "manifest_version": 3,
+   "name": "BGU Spark",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "html/options.html"
+   },
+   "permissions": [ "storage", "cookies", "commands", "alarms", "notifications", "identity" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.1.6",
+   "web_accessible_resources": [ {
+      "matches": [ "*://*/*", "*://moodle.bgu.ac.il/*" ],
+      "resources": [ "images/tosaf.png", "images/bit_pay.png", "images/icon48.png", "html/storage.html", "css/scrapingIndicator.css" ]
+   } ]
+}

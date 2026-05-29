@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BGU Spark</title>
+    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/signin.css">
+</head>
+<body>
+    <div id="initial-load-overlay" class="initial-load-overlay" hidden>
+        <div class="initial-load-card">
+            <div class="initial-load-spinner" aria-hidden="true"></div>
+            <div class="initial-load-title">טוען את הנתונים שלך...</div>
+            <div class="initial-load-subtitle">מסנכרן משימות, קורסים ומעקב</div>
+        </div>
+    </div>
+    <div id="signin-overlay" class="signin-overlay" hidden>
+        <img src="../images/icon128.png" class="signin-logo" alt="BGU Spark">
+        <h1 class="signin-title">ברוכים הבאים ל-BGU Spark</h1>
+        <p class="signin-subtitle">התחבר כדי לסנכרן את הנתונים שלך בין כל המחשבים</p>
+        <button id="signin-google-btn" class="signin-google-btn">
+            <span class="signin-google-spinner" aria-hidden="true"></span>
+            <img src="../images/google-logo.svg" alt="" class="signin-google-icon">
+            <span class="signin-google-label">התחבר עם Google</span>
+        </button>
+        <div id="signin-error" class="signin-error" hidden></div>
+        <div class="signin-privacy">
+            בכניסה אתה מסכים ל<a href="https://shaya16.github.io/BGU-Spark/privacy.html" target="_blank" id="signin-privacy-link">מדיניות הפרטיות</a>
+        </div>
+    </div>
+    <div class="top-bar">
+        <div class="logo-wrapper">
+            <img src="../images/icon48.png" width="24" alt="">
+        </div>
+        <div class="quick-open">
+            <div class="item-wrapper">
+                <div class="item">⌘ / Ctrl</div> + <div class="item">Shift</div> + <div class="item">E</div>
+            </div>
+            <span> :פתיחה מהירה</span>
+        </div>
+        <div class="icons">
+            <button id="sync-status" class="sync-status" aria-label="סטטוס סנכרון" title="סנכרון">
+                <span class="sync-dot" data-state="unknown"></span>
+                <span class="sync-label" data-state="unknown"></span>
+            </button>
+            <span class="settings" id="openStorage">
+                Storage
+                <i class="fa fa-database fa-fw" aria-hidden="true"></i>
+            </span>
+
+            <span class="settings" id="zoomInButton">
+                Zoom In
+                <i class="fa fa-search-plus fa-fw" aria-hidden="true"></i>
+            </span>
+
+            <span class="settings" id="openabout">
+                אודות
+                <i class="fa fa-info fa-fw" aria-hidden="true"></i>
+            </span>
+
+            <span class="settings" id="openSettings">
+                הגדרות
+                <i class="fa fa-cog fa-fw" aria-hidden="true"></i>
+            </span>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-bar">
+        <button class="tab-button active" data-tab="home">
+            <i class="fa fa-home fa-fw"></i>
+            <span>בית</span>
+        </button>
+        <button class="tab-button" data-tab="tasks">
+            <i class="fa fa-pencil fa-fw"></i>
+            <span>משימות</span>
+        </button>
+        <button class="tab-button" data-tab="courses">
+            <i class="fa fa-graduation-cap fa-fw"></i>
+            <span>קורסים</span>
+        </button>
+        <button class="tab-button" data-tab="calendar">
+            <i class="fa fa-calendar fa-fw"></i>
+            <span>לוח שנה</span>
+        </button>
+        <button class="tab-button" data-tab="analytics">
+            <i class="fa fa-bar-chart fa-fw"></i>
+            <span>נתונים</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- HOME TAB -->
+        <div class="tab-panel active" id="tab-home">
+            <div class="pg b-bottom">
+                <div class="quick-links-wrapper full flex w-100 flex-column">
+                    <div class="grid-container quick-links-wrapper visible">
+                        <a href="https://moodle.bgu.ac.il/moodle/my/" class="grid-item moodle-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/moodle-icon.png" alt="moodle" class="icon">
+                            </div>
+                            <span>מודל</span>
+                        </a>
+                        <a href="https://portal.bgu.ac.il/public/login" class="grid-item portal-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/platform-icon.png" alt="portal" class="icon">
+                            </div>
+                            <span>פורטל</span>
+                        </a>
+                        <a href="https://bgu4u22.bgu.ac.il/apex/10g/r/f_login1004/login_desktop?p_lang=he" class="grid-item info-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/bgu-info-icon.png" alt="bgu4u" class="icon">
+                            </div>
+                            <span>מנהל התלמידים</span>
+                        </a>
+                        <a href="https://bgu4u.bgu.ac.il/pls/scwp/!app.gate?app=cns" class="grid-item sign-up-course-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/courses-icon.png" alt="bgu4u" class="icon">
+                            </div>
+                            <span>הרשמה לקורסים</span>
+                        </a>
+                        <a href="https://moodle.bgu.ac.il/moodle/my/" class="grid-item gezer-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/gezer-icon.png" alt="moodle" class="icon">
+                            </div>
+                            <span>גזר</span>
+                        </a>
+                        <a href="#" class="grid-item more-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/more-links.png" alt="moreicon" class="icon">
+                            </div>
+                            <span>עוד</span>
+                        </a>
+                    </div>
+                    <div class="grid-container quick-links-wrapper links-hide">
+                        <a href="https://www.choicefreak.co.il/bgu/" class="grid-item choicefreak-link">
+                            <div class="link-icon-bg">
+                                <img src="../images/choice-freak-icon.png" alt="choicefreak" class="icon">
+                            </div>
+                            <span>ChoiceFreak</span>
+                        </a>
+
+                        <a href="#" class="grid-item add-link">
+                            <div class="link-icon-bg add-link-bg">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </div>
+                            <span>הוסף</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next deadline reminder -->
+            <div class="next-deadline-bar" id="next-deadline-bar" style="display:none;">
+                <i class="fa fa-clock-o"></i>
+                <span id="next-deadline-text"></span>
+            </div>
+
+            <!-- Dashboard Summary Cards -->
+            <div class="dashboard-summary">
+                <div class="summary-card" id="summary-submissions" data-navigate="tasks">
+                    <div class="summary-icon">
+                        <i class="fa fa-pencil"></i>
+                    </div>
+                    <div class="summary-value" id="summary-submissions-value">--</div>
+                    <div class="summary-label">מטלות להגשה</div>
+                </div>
+                <div class="summary-card" id="summary-mytasks" data-navigate="tasks">
+                    <div class="summary-icon" style="background:#f0fdf4; color:#16a34a;">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="summary-value" id="summary-mytasks-value">--</div>
+                    <div class="summary-label">המשימות שלי</div>
+                </div>
+                <div class="summary-card" id="summary-deadline" data-navigate="tasks">
+                    <div class="summary-icon">
+                        <i class="fa fa-clock-o"></i>
+                    </div>
+                    <div class="summary-value" id="summary-deadline-value">--</div>
+                    <div class="summary-label">הגשה הקרובה</div>
+                </div>
+                <div class="summary-card" id="summary-progress" data-navigate="courses">
+                    <div class="summary-icon">
+                        <i class="fa fa-bar-chart"></i>
+                    </div>
+                    <div class="summary-value" id="summary-progress-value">--</div>
+                    <div class="summary-label">מעקב שבועי</div>
+                </div>
+            </div>
+
+            <!-- Upcoming Deadlines -->
+            <div class="upcoming-deadlines" id="upcoming-deadlines">
+                <div class="upcoming-header">
+                    <span>הגשות קרובות</span>
+                </div>
+                <div id="upcoming-deadlines-list">
+                    <div class="upcoming-empty">אין מטלות קרובות</div>
+                </div>
+                <div class="upcoming-footer">
+                    <a href="#" id="show-all-tasks">הצג הכל &larr;</a>
+                </div>
+            </div>
+
+            <!-- My Tasks Deadlines -->
+            <div class="upcoming-deadlines" id="my-tasks-deadlines">
+                <div class="upcoming-header">
+                    <span>המשימות שלי</span>
+                </div>
+                <div id="my-tasks-deadlines-list">
+                    <div class="upcoming-empty">אין משימות עם תאריך יעד</div>
+                </div>
+                <div class="upcoming-footer">
+                    <a href="#" id="show-all-my-tasks">הצג הכל &larr;</a>
+                </div>
+            </div>
+
+            <!-- Donation Banner -->
+            <div class="donation-banner" id="donationBanner">
+                <div class="donation-content">
+                    <div class="donation-logo">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M28.6118 15.6062C28.6118 15.6062 27.3476 17.4636 24.6978 19.0357C24.6978 19.0357 26.6169 2.81681 14.1129 0C17.3165 11.7576 10.0379 15.0734 7.38475 8.86162C2.95394 14.7773 6.31813 19.9384 6.31813 19.9384C4.50131 20.2002 2.97519 18.2153 2.97519 18.2153C2.96156 18.4598 2.95394 18.706 2.95394 18.9539C2.95388 26.1591 8.79481 32 16 32C23.2052 32 29.0461 26.1591 29.0461 18.9539C29.0461 17.7965 28.8946 16.6746 28.6118 15.6062Z" fill="#FF6536"/>
+                            <path d="M2.97513 18.2153C2.97513 18.2153 4.50125 20.2002 6.31806 19.9384C6.31806 19.9384 2.95388 14.7773 7.38469 8.86162C10.0379 15.0734 17.3164 11.7576 14.1129 0C14.7826 0.150875 15.4106 0.340437 16 0.563625V32C8.79481 32 2.95388 26.1591 2.95388 18.9539C2.95388 18.7059 2.9615 18.4598 2.97513 18.2153Z" fill="#FF421D"/>
+                            <path d="M21.7215 26.2785C21.7215 29.4384 19.1599 32 16 32C12.8401 32 10.2785 29.4384 10.2785 26.2785C10.2785 24.5872 11.0123 23.0673 12.179 22.0199C14.3911 25.0252 17.5435 20.4664 15.0868 17.1372C15.0868 17.1372 21.7215 17.9687 21.7215 26.2785Z" fill="#FF7E36"/>
+                            <path d="M10.2785 26.2785C10.2785 24.5872 11.0123 23.0673 12.179 22.0199C14.3911 25.0252 17.5435 20.4664 15.0868 17.1372C15.0868 17.1372 15.4473 17.1825 16 17.357V32C12.8401 32 10.2785 29.4384 10.2785 26.2785Z" fill="#FF6E1D"/>
+                            <g clip-path="url(#clip_donate)"><path d="M18.7931 26.5H21.6333C19.7019 24.7274 18.4684 23.0543 20.5597 21.8548L18.7931 21.3339C17.9992 22.0744 16.512 22.9171 18.7931 26.5Z" fill="white"/><path d="M14.0134 26.5H11C12.6757 25.6658 14.3246 24.8045 13.1128 21.0299L15.2255 22.5928C15.0677 23.8954 15.0563 25.1976 14.0134 26.5Z" fill="white"/><path d="M17.8234 26.5C15.1862 20.7664 20.8077 20.9598 20.8904 17.9497C20.9406 16.1502 19.6222 14.7832 15.5029 12C16.8778 15.8795 7.56 17.1501 15.3644 22.2455C15.4812 21.6231 15.8789 21.001 16.2648 20.3786C14.1944 19.3467 14.2276 18.6448 14.249 18.0341C14.3114 16.2546 16.4097 15.5163 16.2301 13.4326C18.7278 15.6484 18.6921 16.466 18.7105 17.3328C18.7681 20.0232 15.1488 19.0717 15.3987 26.4997H17.8234V26.5Z" fill="white"/></g>
+                            <defs><clipPath id="clip_donate"><rect width="10.6333" height="14.5" fill="white" transform="translate(11 12)"/></clipPath></defs>
+                        </svg>
+                    </div>
+                    <div class="donation-text">
+                        <strong>התוסף הזה נבנה ומתוחזק בהתנדבות</strong>
+                        <p>אני סטודנט כמוכם, ומשקיע מזמני החופשי בפיתוח פיצ׳רים חדשים, תיקון באגים ותחזוקה שוטפת. אם Spark עוזר לכם - תרומה קטנה תעזור לי להמשיך</p>
+                    </div>
+                    <div class="donation-qr">
+                        <img src="../images/bit_pay.png" width="70" alt="QR לתרומה">
+                        <small>bit / סריקה מהנייד</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <div class="warning-icon">
+                    <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
+                </div>
+                <div class="warning-text">
+                    <p>עדיין לא הגדרת שם משתמש וסיסמה למודל! לחץ <span>כאן</span> להגדרת פרטי ההתחברות</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASKS TAB -->
+        <div class="tab-panel" id="tab-tasks">
+            <!-- Submissions Section -->
+            <div class="task-section">
+                <div class="task-section-header">
+                    <div class="task-section-title">
+                        <i class="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                        <span>מטלות להגשה</span>
+                        <span class="task-count" id="submissions-count"></span>
+                    </div>
+                    <button class="toggle-hidden-btn" id="toggle-hidden-btn">הראה מטלות מוסתרות</button>
+                </div>
+                <div id="content" class="task-list"></div>
+            </div>
+            <!-- My Tasks Section -->
+            <div class="task-section">
+                <div class="task-section-header">
+                    <div class="task-section-title">
+                        <i class="fa fa-book fa-fw" aria-hidden="true"></i>
+                        <span>המשימות שלי</span>
+                        <span class="task-count" id="tasks-count"></span>
+                    </div>
+                    <button class="add-task-btn" id="addTaskBtn">
+                        <i class="fa fa-plus"></i> הוסף משימה
+                    </button>
+                </div>
+                <div id="taskItUpContainer" class="task-list"></div>
+            </div>
+        </div>
+
+        <!-- COURSES TAB -->
+        <div class="tab-panel" id="tab-courses">
+            <div class="courses-tab-header">
+                <div class="courses-tab-title">
+                    <i class="fa fa-graduation-cap fa-fw" aria-hidden="true"></i>
+                    <span>קורסים פעילים</span>
+                    <span class="courses-count" id="courses-count"></span>
+                </div>
+            </div>
+            <div class="courses-search-wrapper">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="text" id="courses-search" placeholder="חיפוש קורס..." aria-label="חיפוש קורסים">
+            </div>
+            <div class="courses-empty-state" id="courses-empty-state" style="display: none;">
+                <i class="fa fa-graduation-cap fa-3x" aria-hidden="true"></i>
+                <p>עדיין לא נמצאו קורסים</p>
+                <small>גש למודל כדי לסנכרן את הקורסים שלך</small>
+            </div>
+            <div class="courses-no-results" id="courses-no-results" style="display: none;">
+                <p>לא נמצאו קורסים תואמים</p>
+            </div>
+            <div class="courses-list" id="courses-list"></div>
+        </div>
+
+        <!-- ANALYTICS TAB -->
+        <div class="tab-panel" id="tab-analytics">
+            <div class="analytics-header">
+                <div class="analytics-title">
+                    <i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>
+                    <span>נתונים וסטטיסטיקות</span>
+                </div>
+            </div>
+
+            <!-- Semester Overview Cards -->
+            <div class="dashboard-summary analytics-summary">
+                <div class="summary-card analytics-card">
+                    <div class="summary-icon" style="background:#e0f2fe; color:#0284c7;">
+                        <i class="fa fa-clock-o"></i>
+                    </div>
+                    <div class="summary-value" id="analytics-study-time">--</div>
+                    <div class="summary-label">שעות למידה השבוע</div>
+                    <div class="analytics-delta" id="analytics-study-delta"></div>
+                </div>
+                <div class="summary-card analytics-card">
+                    <div class="summary-icon" style="background:#f3e8ff; color:#7c3aed;">
+                        <i class="fa fa-play-circle"></i>
+                    </div>
+                    <div class="summary-value" id="analytics-videos-count">--</div>
+                    <div class="summary-label">סרטונים שנצפו</div>
+                    <div class="analytics-sub" id="analytics-videos-hours"></div>
+                </div>
+                <div class="summary-card analytics-card">
+                    <div class="summary-icon" style="background:#f0fdf4; color:#16a34a;">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <div class="summary-value" id="analytics-completion-rate">--</div>
+                    <div class="summary-label">אחוז השלמת משימות</div>
+                </div>
+                <div class="summary-card analytics-card">
+                    <div class="summary-icon" style="background:#fef3c7; color:#d97706;">
+                        <i class="fa fa-heartbeat"></i>
+                    </div>
+                    <div class="summary-value" id="analytics-deadline-score">--</div>
+                    <div class="summary-label">ציון דדליינים</div>
+                    <div class="analytics-sub" id="analytics-deadline-avg"></div>
+                </div>
+            </div>
+
+            <!-- Suggestions -->
+            <div class="analytics-suggestions" id="analytics-suggestions">
+                <div class="analytics-section-title">
+                    <i class="fa fa-lightbulb-o"></i> טיפים לשיפור
+                </div>
+                <div id="suggestions-list" class="suggestions-list"></div>
+            </div>
+
+            <!-- Activity Heatmap -->
+            <div class="analytics-section">
+                <div class="analytics-section-title">
+                    <i class="fa fa-th"></i> מפת פעילות
+                </div>
+                <div class="heatmap-wrapper">
+                    <div class="heatmap-days">
+                        <span>א׳</span><span>ב׳</span><span>ג׳</span><span>ד׳</span><span>ה׳</span><span>ו׳</span><span>ש׳</span>
+                    </div>
+                    <div class="heatmap-grid" id="analytics-heatmap"></div>
+                </div>
+                <div class="heatmap-legend">
+                    <span>פחות</span>
+                    <div class="heatmap-cell" style="opacity:0.1"></div>
+                    <div class="heatmap-cell" style="opacity:0.3"></div>
+                    <div class="heatmap-cell" style="opacity:0.55"></div>
+                    <div class="heatmap-cell" style="opacity:0.8"></div>
+                    <div class="heatmap-cell" style="opacity:1"></div>
+                    <span>יותר</span>
+                </div>
+            </div>
+
+            <!-- Engagement Stats -->
+            <div class="analytics-section">
+                <div class="analytics-section-title">
+                    <i class="fa fa-line-chart"></i> מעורבות
+                </div>
+                <div class="engagement-stats" id="analytics-engagement-stats">
+                    <div class="engagement-stat">
+                        <div class="engagement-value" id="engagement-streak">0</div>
+                        <div class="engagement-label">ימי סטריק</div>
+                    </div>
+                    <div class="engagement-stat">
+                        <div class="engagement-value" id="engagement-active-days">0</div>
+                        <div class="engagement-label">ימים פעילים החודש</div>
+                    </div>
+                    <div class="engagement-stat">
+                        <div class="engagement-value" id="engagement-moodle-visits">0</div>
+                        <div class="engagement-label">כניסות למודל השבוע</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Per-Course Section -->
+            <div class="analytics-section">
+                <div class="analytics-section-title">
+                    <i class="fa fa-graduation-cap"></i> לפי קורס
+                </div>
+                <div class="course-pills" id="analytics-course-pills"></div>
+                <div class="course-detail-panel" id="analytics-course-detail">
+                    <div class="analytics-empty-course">בחר קורס למעלה לצפייה בנתונים</div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="analytics-empty-state" id="analytics-empty-state" style="display:none;">
+                <i class="fa fa-bar-chart fa-3x" aria-hidden="true"></i>
+                <p>אין עדיין נתונים</p>
+                <small>המשיכו ללמוד ולהשתמש במודל — הנתונים יתחילו להופיע כאן</small>
+            </div>
+        </div>
+
+        <!-- CALENDAR TAB -->
+        <div class="tab-panel" id="tab-calendar">
+            <div class="calendar-tab-header">
+                <div class="calendar-tab-title">
+                    <i class="fa fa-calendar fa-fw" aria-hidden="true"></i>
+                    <span id="calendar-month-label">לוח שנה</span>
+                </div>
+                <div class="calendar-menu-controls">
+                    <button class="calendar-today-btn" id="calendar-today-btn">היום</button>
+                    <button class="calendar-nav-btn" id="calendar-prev-month" aria-label="חודש קודם">›</button>
+                    <button class="calendar-nav-btn" id="calendar-next-month" aria-label="חודש הבא">‹</button>
+                </div>
+            </div>
+            <div id="calendar-events-container">
+                <div class="calendar-grid-wrapper">
+                    <div class="calendar-grid-weekdays">
+                        <span>א</span><span>ב</span><span>ג</span><span>ד</span><span>ה</span><span>ו</span><span>ש</span>
+                    </div>
+                    <div class="calendar-grid-days" id="calendar-grid-days"></div>
+                </div>
+                <div class="calendar-day-events">
+                    <div class="calendar-day-events-header" id="calendar-day-events-header"></div>
+                    <div class="calendar-day-events-list" id="calendar-day-events-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info">
+        <div class="back-button" id="back-info">
+            <i class="fa fa-long-arrow-right fa-fw" aria-hidden="true"></i>
+            חזור
+        </div>
+        <div class="main-content">
+            <p>התוסף מפותח בהתנדבות על ידי <b>שי אביבי</b>, ואינו נתמך בשום צורה על ידי בן גוריון.</p>
+            <div class="divider"></div>
+            <h3>פרטיות</h3>
+            <p>פרטי המשתמש וההגדרות שבשימוש התוסף נשמרים בזיכרון הדפדפן של המשתמש בלבד. נתונים אלו לא נשמרים על ידי התוסף בשרת כלשהו, ואינם מועברים לגורמים חיצוניים.</p>
+            <div class="divider"></div>
+            <h3>יצירת קשר עם מפתח התוסף</h3>
+            <p>יש לכם עצה? מצאתם תקלה? סתם רוצים לדבר? לחיצה על הכפתור תפתח חלון לשליחת מייל בהתאם להגדרות התוסף.
+                <br><a class="button-style" target="_blank" href="https://mail.google.com/mail/u/0/?view=cm&amp;to=kshayk16@gmail.com&amp;su=יצירת קשר - BGU Spark&amp;fs=1&amp;tf=1">צור קשר</a>
+            </p>
+            <div class="divider"></div>
+            <h3>תרומה למפתח התוסף 🙂</h3>
+            <p>
+                כסטודנט בעצמי, אני משקיע שעות רבות מזמני החופשי בפיתוח התוסף, כדי לשפר אותו ולעזור <b>לכולנו</b>. רוצים לתמוך בי בחזרה? תרומה של כל סכום תתקבל בשמחה ✌
+            </p>
+            <img src="../images/bit_pay.png" width="150" alt="">
+            <br>
+            <small>סריקת הברקוד דרך הטלפון</small>
+        </div>
+    </div>
+
+    <!-- Add/Edit Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content task-modal-content">
+            <span class="close" id="closeTaskModal">&times;</span>
+            <h2 id="taskModalTitle">הוסף משימה</h2>
+            <div class="task-form">
+                <div class="task-form-row">
+                    <label for="taskTitleInput">שם המשימה *</label>
+                    <input type="text" id="taskTitleInput" placeholder="לדוגמה: להגיש תרגיל 5">
+                </div>
+                <div class="task-form-row">
+                    <label for="taskCourseInput">קורס</label>
+                    <input type="text" id="taskCourseInput" placeholder="לדוגמה: מבוא למדעי המחשב">
+                </div>
+                <div class="task-form-row">
+                    <label for="taskLinkInput">קישור</label>
+                    <input type="url" id="taskLinkInput" placeholder="https://...">
+                </div>
+                <div class="task-form-row">
+                    <label>תאריך יעד</label>
+                    <div class="deadline-inputs">
+                        <input type="text" id="taskDeadlineDateInput" placeholder="DD/MM/YY" maxlength="8" inputmode="numeric">
+                        <input type="text" id="taskDeadlineTimeInput" placeholder="HH:MM" maxlength="5" value="23:59" inputmode="numeric">
+                    </div>
+                    <div class="deadline-shortcuts">
+                        <button type="button" class="deadline-shortcut" data-days="0">היום</button>
+                        <button type="button" class="deadline-shortcut" data-days="1">מחר</button>
+                        <button type="button" class="deadline-shortcut" data-days="7">עוד שבוע</button>
+                        <button type="button" class="deadline-shortcut" data-days="14">עוד שבועיים</button>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="taskEditIndex" value="-1">
+            <button id="saveTaskBtn" class="task-action-btn submit-link" style="width:100%; margin-top:10px; padding:8px; font-size:13px;">שמור</button>
+        </div>
+    </div>
+
+    <!-- Sync details modal -->
+    <div id="syncDetailsModal" class="modal sync-details-modal">
+        <div class="modal-content sync-details-content">
+            <span class="close" id="closeSyncDetailsModal">&times;</span>
+            <h2 class="sync-details-title">מצב סנכרון</h2>
+            <div class="sync-details-state">
+                <span class="sync-dot" id="syncDetailsDot" data-state="unknown"></span>
+                <span class="sync-details-state-label" id="syncDetailsStateLabel"></span>
+            </div>
+            <div class="sync-details-error" id="syncDetailsError" hidden>
+                <div class="sync-details-error-title">למה הסנכרון נכשל</div>
+                <div class="sync-details-error-message" id="syncDetailsErrorMessage"></div>
+                <div class="sync-details-error-meta" id="syncDetailsErrorMeta"></div>
+            </div>
+            <div class="sync-details-pending" id="syncDetailsPending" hidden>
+                <div class="sync-details-pending-title">פריטים ממתינים</div>
+                <ul class="sync-details-pending-list" id="syncDetailsPendingList"></ul>
+            </div>
+            <div class="sync-details-actions">
+                <button id="syncDetailsRetryBtn" class="task-action-btn submit-link">
+                    <i class="fa fa-refresh"></i> נסה לסנכרן עכשיו
+                </button>
+                <button id="syncDetailsClearBtn" class="task-action-btn icon-btn danger" hidden>
+                    <i class="fa fa-trash"></i> מחק פריטים תקועים
+                </button>
+            </div>
+            <div class="sync-details-hint">
+                אם השגיאה ממשיכה לצוץ, נסה להתנתק ולהתחבר מחדש מהגדרות. למידע נוסף — kshayk16@gmail.com
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Link Modal -->
+    <div id="addLinkModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>הוסף קישור חדש</h2>
+            <div class="form-wrapper">
+                <div>
+                    <label for="linkName">שם הקישור:</label>
+                    <input type="text" id="linkName" name="linkName">
+                </div>
+                <div>
+                    <label for="linkUrl">כתובת הקישור:</label>
+                    <input type="url" id="linkUrl" name="linkUrl">
+                </div>
+            </div>
+            <button id="saveLinkBtn" class="done-button">שמור</button>
+        </div>
+    </div>
+
+    <script src="../js/calendarFetcher.js"></script>
+    <script src="../lib/supabase-js/supabase.js"></script>
+    <script src="../js/data/storage-adapter.js"></script>
+    <script src="../js/data/client.js"></script>
+    <script src="../js/data/error-logger.js"></script>
+    <script src="../js/data/wipe-user-data.js"></script>
+    <script src="../js/data/auth.js"></script>
+    <script src="../js/data/auth-errors.js"></script>
+    <script src="../js/data/session-guard.js"></script>
+    <script src="../js/data/cache.js"></script>
+    <script src="../js/data/queue.js"></script>
+    <script src="../js/data/sync.js"></script>
+    <script src="../js/data/repos/user-courses.js"></script>
+    <script src="../js/data/repos/tracker-cells.js"></script>
+    <script src="../js/data/repos/tasks.js"></script>
+    <script src="../js/data/repos/submissions.js"></script>
+    <script src="../js/submissionsUI.js"></script>
+    <script src="../js/popup.js"></script>
+    <script src="../js/weeklyTracker.js"></script>
+    <script src="../js/suggestions.js"></script>
+    <script src="../js/analytics.js"></script>
+</body>
+</html>

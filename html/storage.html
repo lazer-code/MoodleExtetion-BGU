@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extension Storage Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .storage-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .memory-info {
+            background-color: #e9f7fe;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .refresh-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .refresh-btn:hover {
+            background-color: #45a049;
+        }
+
+        .storage-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .storage-stats {
+            flex-grow: 1;
+        }
+
+        .storage-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 5px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-bar-fill.sync {
+            background-color: #2196F3;
+        }
+
+        .progress-bar-fill.local {
+            background-color: #FF9800;
+        }
+
+        .storage-type {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .storage-type.sync {
+            color: #2196F3;
+        }
+
+        .storage-type.local {
+            color: #FF9800;
+        }
+
+        .clear-data-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .clear-data-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .row-delete-btn {
+            background: none;
+            border: 1px solid #ddd;
+            color: #999;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.15s;
+        }
+        .row-delete-btn:hover {
+            background-color: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        .storage-table-row-actions {
+            width: 60px;
+            text-align: center;
+        }
+
+        .purge-course-section {
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            border: 2px solid #FF9800;
+            background-color: #fff8e1;
+            border-radius: 4px;
+        }
+        .purge-course-section h2 {
+            color: #e65100;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .purge-course-section p {
+            margin: 0 0 12px 0;
+            color: #6d4c00;
+            font-size: 13px;
+        }
+        .purge-course-section select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-width: 300px;
+            margin-right: 10px;
+            background-color: white;
+        }
+        .purge-course-section button {
+            padding: 8px 20px;
+            font-size: 14px;
+            margin: 0;
+        }
+        .purge-course-section button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        td a {
+            color: #2196F3;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Video Times table specific styles */
+        #videoTimesTable table td:nth-child(1), /* Course */
+        #videoTimesTable table td:nth-child(2) { /* Title */
+            width: 15%;
+        }
+        #videoTimesTable table td:nth-child(3), /* Current Time */
+        #videoTimesTable table td:nth-child(4) { /* Duration */
+            width: 10%;
+        }
+        #videoTimesTable table td:nth-child(5) { /* Last Updated */
+            width: 15%;
+        }
+        #videoTimesTable table td:nth-child(6) { /* URL */
+            width: 35%;
+        }
+        
+        /* Make URLs clickable */
+        #videoTimesTable table td:last-child {
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-database"></i> Extension Storage Viewer</h1>
+        
+        <div class="memory-info">
+            <h2><i class="fas fa-memory"></i> Storage Usage</h2>
+            <p>Local Storage Usage: <span id="localStorageUsage">Calculating...</span></p>
+            <p>Sync Storage Usage: <span id="syncStorageUsage">Calculating...</span></p>
+        </div>
+
+        <button class="refresh-btn" onclick="refreshData()">
+            <i class="fas fa-sync-alt"></i> Refresh Data
+        </button>
+
+        <div class="purge-course-section">
+            <h2><i class="fas fa-eraser"></i> Purge Course Data</h2>
+            <p>Removes a course from every storage key at once. Fixes ghost courses that still appear in analytics after a semester ends.</p>
+            <select id="purgeCourseSelect">
+                <option value="">-- select a course --</option>
+            </select>
+            <button id="purgeCourseBtn" class="clear-data-btn" disabled>
+                <i class="fas fa-trash"></i> Purge Course
+            </button>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-list"></i> Courses Data</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="coursesStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="coursesProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearCourses">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="coursesTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-video"></i> Watched Videos</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="watchedVideosStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="watchedVideosProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearWatchedVideos">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="watchedVideosTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-clock"></i> Video Times</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="videoTimesStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="videoTimesProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearVideoTimes">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="videoTimesTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-clock"></i> Watch Later Items</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type sync">Sync</span></p>
+                    <p>Usage: <span id="watchLaterStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="watchLaterProgressBar" class="progress-bar-fill sync"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearWatchLater">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="watchLaterTable"></div>
+        </div>
+
+
+        <div class="storage-section">
+            <h2><i class="fas fa-calendar-week"></i> Weekly Tracker</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="weeklyTrackerStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="weeklyTrackerProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearWeeklyTracker">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="weeklyTrackerTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-tasks"></i> Task It Up Items</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type sync">Sync</span></p>
+                    <p>Usage: <span id="taskItUpStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="taskItUpProgressBar" class="progress-bar-fill sync"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearTaskItUp">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="taskItUpTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-check-circle"></i> Completed Items</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type sync">Sync</span></p>
+                    <p>Usage: <span id="doneItemsStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="doneItemsProgressBar" class="progress-bar-fill sync"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearDoneItems">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="doneItemsTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-book"></i> Available Courses</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="availableCoursesStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="availableCoursesProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearAvailableCourses">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="availableCoursesTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-chart-line"></i> Analytics — Study Sessions</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="analyticsStudySessionsStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="analyticsStudySessionsProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearAnalyticsStudySessions">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="analyticsStudySessionsTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-hourglass-half"></i> Analytics — Deadline Behavior</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="analyticsDeadlineBehaviorStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="analyticsDeadlineBehaviorProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearAnalyticsDeadlineBehavior">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="analyticsDeadlineBehaviorTable"></div>
+        </div>
+
+        <div class="storage-section">
+            <h2><i class="fas fa-heartbeat"></i> Analytics — Engagement</h2>
+            <div class="storage-info">
+                <div class="storage-stats">
+                    <p>Storage: <span class="storage-type local">Local</span></p>
+                    <p>Usage: <span id="analyticsEngagementStorageUsage">Calculating...</span></p>
+                    <div class="progress-bar">
+                        <div id="analyticsEngagementProgressBar" class="progress-bar-fill local"></div>
+                    </div>
+                </div>
+                <div class="storage-actions">
+                    <button class="clear-data-btn" id="clearAnalyticsEngagement">
+                        <i class="fas fa-trash"></i> Clear Data
+                    </button>
+                </div>
+            </div>
+            <div id="analyticsEngagementTable"></div>
+        </div>
+    </div>
+    <script src="../js/storage.js"></script>
+</body>
+</html>

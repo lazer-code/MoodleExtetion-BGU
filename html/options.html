@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הגדרות - BGU Spark</title>
+    <link rel="stylesheet" href="../css/options.css">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="settings-page">
+        <!-- Header -->
+        <div class="settings-header">
+            <div class="header-logo">
+                <img src="../images/icon48.png" width="32" alt="BGU Spark">
+            </div>
+            <div class="header-text">
+                <h1>הגדרות</h1>
+                <p>BGU Spark</p>
+            </div>
+        </div>
+
+        <!-- Account Section -->
+        <div class="settings-section">
+            <div class="section-title">
+                <i class="fa fa-user-circle"></i>
+                <span>חשבון מודל</span>
+            </div>
+            <form id="userForm" class="account-form">
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="username">שם משתמש</label>
+                        <input type="text" id="username" name="username" placeholder="הזינו שם משתמש">
+                    </div>
+                    <div class="form-field">
+                        <label for="password">סיסמה</label>
+                        <input type="text" id="password" name="password" placeholder="הזינו סיסמה">
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="id">תעודת זהות</label>
+                    <input type="text" id="id" name="id" placeholder="הזינו תעודת זהות">
+                </div>
+                <button type="button" id="saveUserButton" class="btn-primary">
+                    <i class="fa fa-save"></i> שמירת משתמש
+                </button>
+                <button type="button" id="saveButton" class="btn-primary" style="display:none;">שמירה</button>
+            </form>
+            <div class="privacy-note">
+                <i class="fa fa-lock"></i>
+                <span>הפרטים נשמרים בדפדפן בלבד ואינם נשלחים לשום שרת.</span>
+            </div>
+            <div class="privacy-warning">
+                <i class="fa fa-exclamation-triangle"></i>
+                <span>שמרו פרטים רק במחשב אישי שלכם. אל תזינו פרטים במחשבי הספרייה, באולמות מחשבים או בכל מחשב משותף — המידע נשמר מקומית בדפדפן ויהיה זמין למשתמש הבא.</span>
+            </div>
+        </div>
+
+        <!-- Saved Users Section -->
+        <div class="settings-section">
+            <div class="section-title">
+                <i class="fa fa-users"></i>
+                <span>משתמשים שמורים</span>
+            </div>
+            <p class="section-hint">לחיצה על משתמש תמלא את הפרטים בטופס למעלה</p>
+            <div id="userList" class="user-list"></div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="settings-section">
+            <div class="section-title">
+                <i class="fa fa-sliders"></i>
+                <span>העדפות</span>
+            </div>
+
+            <div class="pref-item">
+                <div class="pref-info">
+                    <div class="pref-name">התחברות אוטומטית לגזר</div>
+                    <div class="pref-desc">התחברות אוטומטית למערכת גזר בכניסה לאתר</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="toggle-switch-gezer">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="pref-item">
+                <div class="pref-info">
+                    <div class="pref-name">תיקון כיווניות נוסחאות</div>
+                    <div class="pref-desc">תיקון כיווניות נוסחאות מתמטיות ב-ChatGPT בעברית</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="toggle-switch-gpt-math">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="pref-item">
+                <div class="pref-info">
+                    <div class="pref-name">התראות לפני הגשה</div>
+                    <div class="pref-desc">קבלת התראה לפני מועד ההגשה</div>
+                </div>
+                <div class="pref-actions">
+                    <button type="button" id="test-notification" class="btn-test">
+                        <i class="fa fa-bell"></i> בדיקה
+                    </button>
+                    <select id="notification-hours" class="pref-select">
+                        <option value="0">כבוי</option>
+                        <option value="6">6 שעות</option>
+                        <option value="12">12 שעות</option>
+                        <option value="24" selected>24 שעות</option>
+                        <option value="48">48 שעות</option>
+                        <option value="72">72 שעות</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pref-hint" id="notification-hint">
+                <i class="fa fa-info-circle"></i>
+                <div>
+                    <span>לא מקבלים התראות?</span> ודאו שההתראות מופעלות ב-Windows:
+                    <br><b>הגדרות</b> &larr; <b>מערכת</b> &larr; <b>התראות</b> &larr; ודאו שההתראות מופעלות, וש-Google Chrome מופעל ברשימה.
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Section (Supabase sign-in) -->
+        <div class="settings-section" id="account-section" hidden>
+            <div class="section-title">
+                <i class="fa fa-user"></i>
+                <span>חשבון BGU Spark</span>
+            </div>
+            <div class="account-info">
+                <div>
+                    <div class="account-label">מחובר כ:</div>
+                    <div id="account-email" class="account-email">—</div>
+                </div>
+                <button id="signout-btn" class="btn-danger">התנתק</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../lib/supabase-js/supabase.js"></script>
+    <script src="../js/data/storage-adapter.js"></script>
+    <script src="../js/data/client.js"></script>
+    <script src="../js/data/error-logger.js"></script>
+    <script src="../js/data/wipe-user-data.js"></script>
+    <script src="../js/data/auth.js"></script>
+    <script src="../js/options.js"></script>
+</body>
+</html>

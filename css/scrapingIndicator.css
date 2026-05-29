@@ -1,0 +1,162 @@
+/* BGU Spark - Scraping Indicator Styles */
+
+#bgu-scraping-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 12px;
+    z-index: 10000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+    max-width: 320px;
+    backdrop-filter: blur(10px);
+    animation: slideInUp 0.3s ease-out;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.scraping-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.scraping-spinner {
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+}
+
+.scraping-header-text {
+    flex: 1;
+}
+
+.scraping-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #667eea;
+}
+
+#scraping-message {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
+}
+
+#scraping-details {
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 12px;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.scraping-course-item {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scraping-course-name {
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.scraping-course-meta {
+    opacity: 0.8;
+    font-size: 11px;
+}
+
+.scraping-more-text {
+    text-align: center;
+    padding: 8px 0;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.scraping-no-courses {
+    text-align: center;
+    opacity: 0.8;
+}
+
+#close-scraping-indicator {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: transparent;
+    border: none;
+    color: #999;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-weight: normal;
+}
+
+#close-scraping-indicator:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+/* Custom scrollbar for scraping details */
+#scraping-details::-webkit-scrollbar {
+    width: 6px;
+}
+
+#scraping-details::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+#scraping-details::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+#scraping-details::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+

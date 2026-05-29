@@ -1,0 +1,457 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Assistant", sans-serif !important;
+    background-color: #f8f9fa;
+    width: 750px;
+    min-height: 700px;
+    direction: rtl;
+}
+
+/* =============================================
+   Page Layout
+   ============================================= */
+
+.settings-page {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* =============================================
+   Header
+   ============================================= */
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.header-logo {
+    width: 44px;
+    height: 44px;
+    background: #fff3ed;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-text h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.header-text p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* =============================================
+   Sections
+   ============================================= */
+
+.settings-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 16px;
+}
+
+.section-title i {
+    color: #FF6536;
+    font-size: 16px;
+}
+
+.section-hint {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 12px;
+}
+
+/* =============================================
+   Account Form
+   ============================================= */
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.form-field input {
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    background: #f8fafc;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+}
+
+.form-field input:focus {
+    border-color: #FF6536;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 101, 54, 0.1);
+    background: white;
+}
+
+.form-field input::placeholder {
+    color: #cbd5e1;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background: #FF6536;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-primary:hover {
+    background: #e85a2f;
+}
+
+.privacy-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #f0fdf4;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #166534;
+}
+
+.privacy-note i {
+    color: #16a34a;
+    font-size: 12px;
+}
+
+.privacy-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #fffbeb;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #92400e;
+    line-height: 1.5;
+}
+
+.privacy-warning i {
+    color: #d97706;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* =============================================
+   User List
+   ============================================= */
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: white;
+}
+
+.user-block:hover {
+    background: #fef7f3;
+    border-color: #FF6536;
+}
+
+.user-block.selected {
+    background: #FF6536;
+    color: white;
+    border-color: #FF6536;
+}
+
+.user-block span {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.user-block input {
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.edit-user-button,
+.delete-user-button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.edit-user-button {
+    background: #1e293b;
+    color: white;
+}
+
+.edit-user-button:hover {
+    opacity: 0.85;
+}
+
+.delete-user-button {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
+    margin-right: 6px !important;
+}
+
+.delete-user-button:hover {
+    background: #fee2e2 !important;
+}
+
+/* =============================================
+   Preferences
+   ============================================= */
+
+.pref-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.pref-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.pref-item:first-of-type {
+    padding-top: 0;
+}
+
+.pref-info {
+    flex: 1;
+}
+
+.pref-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.pref-desc {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+/* Toggle Switch */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e2e8f0;
+    transition: 0.2s;
+    border-radius: 22px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.2s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+input:checked + .toggle-slider {
+    background-color: #FF6536;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(20px);
+}
+
+/* Select */
+.pref-select {
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: inherit;
+    background: #f8fafc;
+    cursor: pointer;
+    color: #1e293b;
+    transition: border-color 0.15s;
+}
+
+.pref-select:focus {
+    border-color: #FF6536;
+    outline: none;
+}
+
+/* Notification pref actions */
+.pref-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-test {
+    padding: 6px 14px;
+    background: #1e293b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.btn-test:hover {
+    background: #334155;
+}
+
+/* Notification hint */
+.pref-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #92400e;
+}
+
+.pref-hint i {
+    color: #d97706;
+    font-size: 14px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.pref-hint b {
+    font-weight: 700;
+}
+
+/* Account section (Supabase sign-in) */
+#account-section { margin-top: 24px; }
+.account-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+.account-label { font-size: 12px; color: #666; }
+.account-email { font-size: 14px; font-weight: 600; color: #333; margin-top: 2px; }
+.btn-danger {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: inherit;
+    cursor: pointer;
+}
+.btn-danger:hover { background: #b91c1c; }

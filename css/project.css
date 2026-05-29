@@ -1,0 +1,118 @@
+/* Remove or comment out this old rule for best effect:
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 40px 0;
+    font-family: 'Inter', 'Assistant', sans-serif !important;
+    font-size: 1.08em;
+    letter-spacing: 0.01em;
+    table-layout: fixed;
+}
+
+
+table th:nth-child(1),
+table td:nth-child(1) { width: 10%; }
+table th:nth-child(2),
+table td:nth-child(2) { width: 10%; }
+table th:nth-child(3),
+table td:nth-child(3) { width: 30%; }
+table th:nth-child(4),
+table td:nth-child(4) { width: 20%; }
+table th:nth-child(5),
+table td:nth-child(5) { width: 30%; }
+
+thead tr td {
+    background: #2563eb !important;
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1.12em;
+    letter-spacing: 0.03em;
+    border: none;
+    padding: 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+tbody tr:nth-child(even) {
+    background: #f6f8fa !important;
+}
+tbody tr:nth-child(odd) {
+    background: #fff !important;
+}
+
+
+    transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+}
+tbody tr:hover {
+    background: #e3eefd !important;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.06);
+    transform: translateY(-1px) scale(1.01);
+    cursor: pointer;
+}
+tbody tr:hover td {
+    background: transparent !important;
+    color: #1e293b !important;
+}
+
+
+table td {
+    padding: 18px 14px;
+    font-size: 1.05em;
+    color: #222;
+    border: none;
+    vertical-align: middle;
+    transition: color 0.15s;
+    border-right: 1px solid #f1f5f9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+table td:last-child {
+    border-right: none;
+}
+
+table td:first-child {
+    position: sticky;
+    left: 0;
+    background: #eaf2fd !important;
+    color: #2563eb !important;
+    z-index: 2;
+    font-weight: 600;
+    box-shadow: 2px 0 8px -2px rgba(37,99,235,0.04);
+}
+
+table tr:first-child td:first-child {
+    border-top-left-radius: 16px;
+}
+table tr:first-child td:last-child {
+    border-top-right-radius: 16px;
+}
+
+@media (max-width: 900px) {
+    table {
+        font-size: 0.98em;
+    }
+    
+    table td {
+        padding: 12px 8px;
+    }
+    
+    table th:nth-child(1),
+    table td:nth-child(1) { width: 25%; }
+    table th:nth-child(2),
+    table td:nth-child(2) { width: 35%; }
+    table th:nth-child(3),
+    table td:nth-child(3) { width: 15%; }
+    table th:nth-child(4),
+    table td:nth-child(4) { width: 15%; }
+    table th:nth-child(5),
+    table td:nth-child(5) { width: 10%; }
+} */

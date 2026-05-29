@@ -1,0 +1,262 @@
+body{
+    font-family: "Assistant", sans-serif !important;
+}
+
+h5{
+    font-size:18px !important;
+}
+.card.dashboard-card{
+    border-radius: 15px !important;
+}
+
+.card.dashboard-card .card-img {
+    border-radius: 20px 20px 0 0px !important;
+}
+.block_mycourses .card-body{
+    border:none !important;
+}
+
+.card-footer-container, .text-truncate, .card.dashboard-card{
+    background-color: #f7f7f7 !important;
+    
+}
+
+.card-footer-container{
+    padding: 0px 20px !important;
+}
+
+.dashboard-card .ml-auto.dropdown{
+    bottom:auto !important
+}
+.dashboard-card .ml-auto.dropdown button{
+    background: white;
+    height: 30px !important;
+    width: 30px !important;
+    border:none !important;
+}
+.dashboard-card .card-body + div{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+}
+
+#page-my-index #page-wrapper #page #page-content{
+    background-color:white !important;
+}
+
+.block-region .block .card-body.p-3{
+    box-shadow:none !important;
+}
+
+#page-course-view-topics li.section{
+    background:white !important;
+}
+
+#page-course-view-topics .expanded-icon::before, #page-course-view-topics .collapsed-icon:before{
+    display:none !important;
+}
+
+.icons-collapse-expand .expanded-icon i, .collapsed-icon i{
+    color:white !important;
+}
+
+.course-section-header.d-flex {
+    padding: 5px !important;
+    background-color: #1b2539 !important;
+    border-radius: 8px !important;
+}
+.block-region .block>.card-body>h5.card-title{
+    padding: 15px !important;
+    background-color: #1b2539 !important;
+    border-radius: 8px !important;
+}
+.section-collapsemenu .collapseall, .section-collapsemenu.collapsed .expandall {
+    color: white !important;
+    font-size: 14px !important;
+}
+
+#topofscroll .moremenu{
+    margin-top:20px !important;
+}
+
+#topofscroll .moremenu li:not(:nth-child(4)){
+    margin-left: 10px !important;
+    background: white !important;
+    padding-left: 10px !important;
+    border-left: solid 1px lightgrey !important;
+    border-bottom:none !important;
+}
+
+#topofscroll .moremenu li:nth-child(4){
+    margin-left: 10px !important;
+    background: white !important;
+    padding-left: 10px !important;
+    border-left: none !important;
+    border-bottom:none !important;
+}
+
+#topofscroll .moremenu .nav-tabs .nav-item .nav-link:hover, .moremenu .nav-tabs .nav-item .nav-link.active {
+    background-color: white !important;
+    border-bottom: solid 2px orange !important;
+}
+
+#topofscroll .moremenu .nav-tabs .nav-item .nav-link{
+padding:14px 20px !important;
+background:white !important;
+}
+
+.activitytitle.media.modtype_resource .activityiconcontainer{
+    background:#7ed650;
+}
+
+.header-main{
+    height:168px !important;
+}
+
+.drawer-toggler.drawer-right-toggle.ml-auto.d-print-none{
+    left: 0 !important;
+    margin-left:0 !important;
+}
+
+.drawer-toggles .drawer-toggler .btn{
+    color: #1b2539 !important;
+    background-color: #e8e8e8 !important;
+    border: none !important;
+}
+
+
+.watch-videos{
+    position: absolute;
+    top: 10px;
+    font-size: 12px;
+    right: 50px;
+    background: white;
+    padding: 5px 20px;
+    border-radius: 80px;
+    text-decoration: none !important;
+}
+
+.watch-videos:hover{
+    background: orange;
+    color: white;
+}
+
+.camera-icon{
+    margin-left:5px;
+    display: inline-block !important;
+}
+
+.cell.c1{
+    direction: rtl !important;
+}
+
+.course-content .topics h3{
+    font-size: 18px;
+}
+
+@media (min-width: 768px) {
+    .activity-item:not(.activityinline) {
+        padding: 15px !important;
+    }
+}
+
+th.header{
+    background-color: rgb(27, 37, 57) !important;
+    font-size:14px !important;
+}
+
+
+th.header.c0{
+    border-radius: 0 8px 8px 0 ;
+}
+
+th.header.c5{
+    border-radius: 8px 0 0 8px ;
+}
+
+.vjs-control-bar{
+    width: calc(100% - 20px) !important;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: #000714d8 !important;
+    height: 4em !important;
+}
+
+.vjs-control.vjs-button:not(.vjs-hidden){
+    display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        align-content: center !important;
+        transition-duration: .1s;
+        border-radius: 12px;
+
+    
+}
+
+.vjs-control.vjs-button:hover{
+    background: #00000094 !important;
+    
+}
+.vjs-button > .vjs-icon-placeholder:before {
+    font-size: 1.8em;
+    line-height: 2.27 !important;
+}
+
+.video-js .vjs-time-control {
+    line-height: 4em !important;
+
+}
+
+.vjs-playback-rate .vjs-playback-rate-value {
+    line-height: 2.6em !important;
+}
+
+.vjs-playback-rate .vjs-menu {
+    height: 3em !important;
+    width: 500% !important;
+    bottom: -2px !important;
+    left: auto !important;
+}
+
+.vjs-menu-button-popup .vjs-menu .vjs-menu-content {
+    background: #000714d8 !important;
+    position: absolute;
+    width: max-content;
+    bottom: 3em !important;
+    right: 0 !important;
+    width: 82em !important;
+    border-radius: 12px;
+    gap: 0;
+    display: flex
+;
+}
+
+.vjs-menu li {
+
+    padding: 1em !important;
+
+}
+
+.vjs-progress-holder{
+    height: 12px !important;
+}
+
+.vjs-volume-bar.vjs-slider-horizontal {
+    height: 0.5em !important;
+}
+.vjs-slider-horizontal .vjs-volume-level {
+    height: 0.5em  !important;
+}
+
+.vjs-volume-control.vjs-control.vjs-volume-horizontal{
+    display: flex !important;
+    height: 100% !important;
+    align-content: center !important;
+    align-items: center !important;
+}
+
+.vjs-slider-horizontal .vjs-volume-level:before {
+    line-height: 1.2em !important;
+}
